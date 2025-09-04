@@ -1,0 +1,7 @@
+python-dotenv
+pandas
+lxml
+argparse
+tqdm
+PyYAML
+requests

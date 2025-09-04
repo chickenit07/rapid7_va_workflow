@@ -1,0 +1,53 @@
+# workflow_schedule.yaml
+
+schedule_groups:
+  first:
+      # DMZ Windows
+    - pair: [38, 39]
+      receivers: ["datpq2"]
+  
+  second:
+      # DMZ Oracle
+    - pair: [42, 43]
+      receivers: ["datpq2"]
+  
+  third:
+      # UDNganh
+    - pair: [52, 53]
+      receivers: ["datpq2"]
+  
+  fourth:
+      # ServerFarm Oracle
+    - pair: [59, 60]
+      receivers: ["datpq2"]
+  
+  sixth:
+      # ServerFarm Windows
+    - pair: [47, 48]
+      receivers: ["datpq2"]
+ 
+  seventh:
+      # ServerFarm Ubuntu
+    - pair: [61, 62] 
+      receivers: ["datpq2"]
+  
+  eighth:    
+      # UDLoi
+    - pair: [56, 57]
+      receivers: ["datpq2"]
+
+#  Available Reports:
+# 1. DMZ Windows - XML Export (ID: 38)
+# 2. DMZ Windows - Vuln Check (ID: 39)
+# 3. DMZ Oracle - XML Export (ID: 42)
+# 4. DMZ Oracle - Vuln Check (ID: 43)
+# 5. ServerFarm Windows - Vuln Check (ID: 47)
+# 6. ServerFarm Windows - XML Export (ID: 48)
+# 7. UDNganh - XML Export (ID: 52)
+# 7. UDNganh - Vuln Check (ID: 53)
+# 9. UDLoi - XML Export (ID: 56)
+# 10. UDLoi - Vuln Check (ID: 57)
+# 11. ServerFarm Oracle - XML Export (ID: 59)
+# 12. ServerFarm Oracle - Vuln Check (ID: 60)
+# 13. ServerFarm Ubuntu - Vuln Check (ID: 61)
+# 14. ServerFarm Ubuntu - XML Export (ID: 62)
