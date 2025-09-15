@@ -21,33 +21,58 @@ schedule_groups:
     - pair: [59, 60]
       receivers: ["datpq2"]
   
-  sixth:
+  fifth:
       # ServerFarm Windows
     - pair: [47, 48]
       receivers: ["datpq2"]
  
-  seventh:
+  sixth:
       # ServerFarm Ubuntu
     - pair: [61, 62] 
       receivers: ["datpq2"]
   
-  eighth:    
+  seventh:    
       # UDLoi
     - pair: [56, 57]
       receivers: ["datpq2"]
-
+  
+  eighth:
+      # High Risk
+    - pair: [112, 113]
+      receivers: ["datpq2"]
+  
+  ninth:
+      # DB Vlan25
+    - pair: [127,128]
+      receivers: ["datpq2"]
+      
+      
 #  Available Reports:
 # 1. DMZ Windows - XML Export (ID: 38)
 # 2. DMZ Windows - Vuln Check (ID: 39)
 # 3. DMZ Oracle - XML Export (ID: 42)
 # 4. DMZ Oracle - Vuln Check (ID: 43)
-# 5. ServerFarm Windows - Vuln Check (ID: 47)
-# 6. ServerFarm Windows - XML Export (ID: 48)
+# 5. ServerFarm Windows 212223 - Vuln Check (ID: 47)
+# 6. ServerFarm Windows 212223 - XML Export (ID: 48)
 # 7. UDNganh - XML Export (ID: 52)
-# 7. UDNganh - Vuln Check (ID: 53)
+# 8. UDNganh - Vuln Check (ID: 53)
 # 9. UDLoi - XML Export (ID: 56)
 # 10. UDLoi - Vuln Check (ID: 57)
 # 11. ServerFarm Oracle - XML Export (ID: 59)
 # 12. ServerFarm Oracle - Vuln Check (ID: 60)
 # 13. ServerFarm Ubuntu - Vuln Check (ID: 61)
 # 14. ServerFarm Ubuntu - XML Export (ID: 62)
+# 15. ServerFarm Windows 2425 - XML Export (ID: 105)
+# 16. ServerFarm Windows 2425 - Vuln Check (ID: 106)
+# 17. Database Windows - Vuln Check (ID: 107)
+# 18. Database Windows - XML Export (ID: 108)
+# 19. HighRisk - XML Export (ID: 112)
+# 20. HighRisk - Vuln Check (ID: 113)
+# 21. UAT59 - Vuln Check (ID: 121)
+# 22. UAT59 - XML Export (ID: 122)
+# 23. UAT60 - XML Export (ID: 123)
+# 24. UAT60 - Vuln Check (ID: 124)
+# 25. UAT61 - XML Export (ID: 125)
+# 26. UAT61 - Vuln Check (ID: 126)
+# 27. DBVlan25 - Vuln Check (ID: 127)
+# 28. DBVlan25 - XML Export (ID: 128)

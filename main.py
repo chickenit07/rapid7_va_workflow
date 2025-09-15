@@ -1,6 +1,6 @@
 import argparse
 import time
-from modules.workflow import auto_execute, show_reports, check_reports, show_asset_groups, get_installed_software, get_installed_software_multiple_groups, get_installed_software_all_groups
+from modules.workflow import auto_execute, show_reports, check_reports, show_asset_groups, get_installed_software, get_installed_software_multiple_groups, get_installed_software_all_groups, show_workflow_status
 
 def main():
     parser = argparse.ArgumentParser(description="Workflow Automation Tool")
@@ -11,6 +11,7 @@ def main():
     parser.add_argument('--show-asset-groups', action='store_true', help='Show all available asset group IDs')
     parser.add_argument('--get-software', nargs='+', metavar='asset_group_id_or_all', 
                         help='Get installed software. Use "all" to fetch all asset groups, or pass one or more asset group IDs like: 1 2 3')
+    parser.add_argument('--workflow-status', action='store_true', help='Show current workflow status and progress')
     
 
     args = parser.parse_args()
@@ -60,7 +61,8 @@ def main():
             print(f"❌ Error processing asset group IDs: {e}")
             return
 
-
+    elif args.workflow_status:
+        show_workflow_status()
 
     else:
         parser.print_help()
