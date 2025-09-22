@@ -18,7 +18,7 @@ load_dotenv()
 DOWNLOAD_PATH = os.getenv('DOWNLOAD_PATH', './reports')
 EMAIL_DOMAIN = os.getenv('EMAIL_DOMAIN')
 WORKFLOW_OWNER = os.getenv('WORKFLOW_OWNER')
-WAIT_TIME = int(os.getenv('WAIT_TIME'))
+WAIT_TIME = int(os.getenv('WAIT_TIME', '30'))
 
 # Logging Configuration
 LOG_DIR = './logs'
@@ -134,15 +134,15 @@ def execute_workflow(report_ids, receiver_emails, cc_emails):
         # Step 4: Archive Reports
         clean_reports()
 
-        print("✅ Workflow executed successfully!")
-        logger.info("✅ Workflow executed successfully!")
+        print("Workflow executed successfully!")
+        logger.info("Workflow executed successfully!")
 
     except Exception as e:
-        logger.error(f"❌ Workflow failed for reports: {report_ids}. Error: {e}")
-        print(f"❌ Workflow failed for reports: {report_ids}. Error: {e}")
+        logger.error(f"Workflow failed for reports: {report_ids}. Error: {e}")
+        print(f"Workflow failed for reports: {report_ids}. Error: {e}")
 
         # Send error notification to WORKFLOW_OWNER
-        error_title = "❌ Workflow Failed Notification"
+        error_title = "Workflow Failed Notification"
         error_body = f"""
 The workflow failed while processing the following reports:
 
@@ -192,8 +192,8 @@ def auto_execute():
                 })
 
         if not all_workflows:
-            print("❌ No workflows found in schedule")
-            logger.error("❌ No workflows found in schedule")
+            print("No workflows found in schedule")
+            logger.error("No workflows found in schedule")
             return
 
         # Get current workflow entry (convert 1-based to 0-based for array access)
@@ -202,8 +202,8 @@ def auto_execute():
         current_group = current_workflow['group']
         current_task = current_workflow['task']
 
-        print(f"🔄 Running workflow {run_count}/{len(all_workflows)} from group: {current_group}")
-        logger.info(f"🔄 Running workflow {run_count}/{len(all_workflows)} from group: {current_group}")
+        print(f"Running workflow {run_count}/{len(all_workflows)} from group: {current_group}")
+        logger.info(f"Running workflow {run_count}/{len(all_workflows)} from group: {current_group}")
 
         # Execute the current workflow
         report_ids = current_task['pair']
@@ -220,13 +220,13 @@ def auto_execute():
         with open(run_count_file, 'w') as f:
             f.write(str(next_run_count))
 
-        print(f"\n✅ Workflow {run_count}/{len(all_workflows)} completed successfully!")
-        logger.info(f"✅ Workflow {run_count}/{len(all_workflows)} completed successfully!")
+        print(f"\nWorkflow {run_count}/{len(all_workflows)} completed successfully!")
+        logger.info(f"Workflow {run_count}/{len(all_workflows)} completed successfully!")
 
     except Exception as e:
-        logger.error(f"❌ Workflow execution failed: {e}")
-        print(f"❌ Workflow execution failed: {e}")
-        print(f"⚠️  Counter not incremented - will retry same workflow next time")
+        logger.error(f"Workflow execution failed: {e}")
+        print(f"Workflow execution failed: {e}")
+        print(f"Counter not incremented - will retry same workflow next time")
 
 
 # ----------------------------
@@ -239,7 +239,7 @@ def show_workflow_status():
         run_count_file = './schedule_process.txt'
         
         if not os.path.exists(run_count_file):
-            print("📊 No workflow runs recorded yet")
+            print("No workflow runs recorded yet")
             return
 
         with open(run_count_file, 'r') as f:
@@ -257,10 +257,10 @@ def show_workflow_status():
                 })
 
         if not all_workflows:
-            print("❌ No workflows found in schedule")
+            print("No workflows found in schedule")
             return
 
-        print(f"\n📊 Workflow Status:")
+        print(f"\nWorkflow Status:")
         print(f"   Total workflows: {len(all_workflows)}")
         print(f"   Current position: {run_count}")
         print(f"   Next workflow: {run_count}/{len(all_workflows)}")
@@ -269,7 +269,7 @@ def show_workflow_status():
         # Show next workflow details (convert 1-based to 0-based for array access)
         workflow_index = (run_count - 1) % len(all_workflows)
         next_workflow = all_workflows[workflow_index]
-        print(f"\n🔄 Next workflow to run:")
+        print(f"\nNext workflow to run:")
         print(f"   Group: {next_workflow['group']}")
         print(f"   Report IDs: {next_workflow['report_ids']}")
         print(f"   Receivers: {next_workflow['receivers']}")
@@ -279,15 +279,15 @@ def show_workflow_status():
         for i, workflow in enumerate(all_workflows):
             workflow_number = i + 1  # Convert to 1-based numbering
             if workflow_number == run_count:
-                status = "🔄"  # Current workflow
+                status = "Running"  # Current workflow
             elif workflow_number < run_count:
-                status = "✅"  # Completed workflows
+                status = "Completed"  # Completed workflows
             else:
                 status = "⏳"  # Pending workflows
             print(f"   {workflow_number:2d}. {status} {workflow['group']} - IDs: {workflow['report_ids']} - Receivers: {workflow['receivers']}")
 
     except Exception as e:
-        print(f"❌ Error showing workflow status: {e}")
+        print(f"Error showing workflow status: {e}")
 
 
 # ----------------------------
@@ -298,8 +298,8 @@ def show_reports(limit):
     try:
         force_show_reports(limit)
     except Exception as e:
-        logger.error(f"❌ Failed to fetch reports: {e}")
-        print(f"❌ Failed to fetch reports: {e}")
+        logger.error(f"Failed to fetch reports: {e}")
+        print(f"Failed to fetch reports: {e}")
 
 
 # ----------------------------
@@ -312,11 +312,11 @@ def check_reports(report_id1, report_id2, receiver_email):
         receiver_emails = [receiver_email]
         cc_emails = None  # No CC for manual execution
 
-        print(f"🔄 Executing workflow for reports: {report_ids} with receiver: {receiver_email}")
-        logger.info(f"🔄 Executing workflow for reports: {report_ids} with receiver: {receiver_email}")
+        print(f"Executing workflow for reports: {report_ids} with receiver: {receiver_email}")
+        logger.info(f"Executing workflow for reports: {report_ids} with receiver: {receiver_email}")
         
         # Step 1: Trigger report generation (replaces the old --gen functionality)
-        print("🔄 Triggering report generation...")
+        print("Triggering report generation...")
         force_gen_trigger_reports(report_ids)
         
         # Step 2: Wait for report generation to complete
@@ -326,9 +326,9 @@ def check_reports(report_id1, report_id2, receiver_email):
         # Step 3: Execute the workflow
         execute_workflow(report_ids, receiver_emails, cc_emails)
 
-        print("\n✅ Manual workflow execution completed successfully!")
-        logger.info("✅ Manual workflow execution completed successfully!")
+        print("\nManual workflow execution completed successfully!")
+        logger.info("Manual workflow execution completed successfully!")
 
     except Exception as e:
-        logger.error(f"❌ Manual workflow execution failed: {e}")
-        print(f"❌ Manual workflow execution failed: {e}")
+        logger.error(f"Manual workflow execution failed: {e}")
+        print(f"Manual workflow execution failed: {e}")

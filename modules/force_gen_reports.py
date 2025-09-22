@@ -63,7 +63,10 @@ def debug_request(method, url, **kwargs):
 # ----------------------------
 def fetch_report_ids(limit=10):
     """Fetch and display report IDs with pagination."""
-    logger.info("📥 Fetching report IDs from InsightVM.")
+    # Validate environment variables first
+    validate_env()
+    
+    logger.info("Fetching report IDs from InsightVM.")
     reports = []
     page = 0
     page_size = 100  # Max results per page
@@ -85,7 +88,7 @@ def fetch_report_ids(limit=10):
                 break
 
         if not reports:
-            logging.warning("❌ No reports found.")
+            logging.warning("No reports found.")
             return []
 
         if limit != 'all':
@@ -95,26 +98,26 @@ def fetch_report_ids(limit=10):
         return reports
 
     except Exception as e:
-        logger.error(f"❌ Failed to fetch report IDs: {e}")
+        logger.error(f"Failed to fetch report IDs: {e}")
         raise
 
 
 def trigger_report_generation(report_id):
     """Trigger report generation."""
     if not isinstance(report_id, int):
-        logging.warning(f"❌ Invalid Report ID (must be an integer): {report_id}. Skipping.")
-        print(f"❌ Invalid Report ID (must be an integer): {report_id}. Skipping.")
+        logging.warning(f"Invalid Report ID (must be an integer): {report_id}. Skipping.")
+        print(f"Invalid Report ID (must be an integer): {report_id}. Skipping.")
         return
-    print(f"🚀 Triggering report generation for Report ID: {report_id}")
-    logger.info(f"🚀 Triggering report generation for Report ID: {report_id}")
+    print(f"Triggering report generation for Report ID: {report_id}")
+    logger.info(f"Triggering report generation for Report ID: {report_id}")
     url = f"{INSIGHTVM_HOST}/api/3/reports/{report_id}/generate"
     try:
         debug_request("POST", url, headers=HEADERS, auth=HTTPBasicAuth(USERNAME, PASSWORD), verify=False)
-        logger.info(f"✅ Report generation triggered for Report ID: {report_id}")
-        print(f"✅ Report generation triggered for Report ID: {report_id}")
+        logger.info(f"Report generation triggered for Report ID: {report_id}")
+        print(f"Report generation triggered for Report ID: {report_id}")
     except Exception as e:
-        logger.error(f"❌ Failed to trigger report generation for Report ID: {report_id}: {e}")
-        print(f"❌ Failed to trigger report generation for Report ID: {report_id}: {e}")
+        logger.error(f"Failed to trigger report generation for Report ID: {report_id}: {e}")
+        print(f"Failed to trigger report generation for Report ID: {report_id}: {e}")
 
 
 def trigger_multiple_reports(report_ids):
@@ -124,9 +127,9 @@ def trigger_multiple_reports(report_ids):
             try:
                 trigger_report_generation(report_id)
             except Exception as e:
-                logging.warning(f"❌ Skipping Report ID {report_id} due to error: {e}")
+                logging.warning(f"Skipping Report ID {report_id} due to error: {e}")
         else:
-            logging.warning(f"❌ Invalid Report ID (must be an integer): {report_id}. Skipping.")
+            logging.warning(f"Invalid Report ID (must be an integer): {report_id}. Skipping.")
 
 
 def show_reports(limit=10):
@@ -134,12 +137,12 @@ def show_reports(limit=10):
     try:
         reports = fetch_report_ids(limit)
         if reports:
-            print("\n📊 Available Reports:")
+            print("\nAvailable Reports:")
             for i, report in enumerate(reports, start=1):
                 print(f"{i}. {report.get('name', 'Unnamed Report')} (ID: {report.get('id')})")
     except Exception as e:
-        logger.error(f"❌ Failed to show reports: {e}")
-        print(f"❌ Failed to show reports: {e}")
+        logger.error(f"Failed to show reports: {e}")
+        print(f"Failed to show reports: {e}")
 
 
 # ----------------------------
